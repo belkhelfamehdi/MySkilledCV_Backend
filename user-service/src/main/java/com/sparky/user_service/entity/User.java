@@ -30,7 +30,6 @@ public class User implements UserDetails {
     private Role role;
 
     /**
-     * @return
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -38,7 +37,6 @@ public class User implements UserDetails {
     }
 
     /**
-     * @return
      */
     @Override
     public String getUsername() {
@@ -46,7 +44,6 @@ public class User implements UserDetails {
     }
 
     /**
-     * @return
      */
     @Override
     public boolean isAccountNonExpired() {
@@ -54,7 +51,6 @@ public class User implements UserDetails {
     }
 
     /**
-     * @return
      */
     @Override
     public boolean isAccountNonLocked() {
@@ -62,7 +58,6 @@ public class User implements UserDetails {
     }
 
     /**
-     * @return
      */
     @Override
     public boolean isCredentialsNonExpired() {
@@ -70,7 +65,6 @@ public class User implements UserDetails {
     }
 
     /**
-     * @return
      */
     @Override
     public boolean isEnabled() {
