@@ -8,11 +8,13 @@ import com.sparky.user_service.request.AuthenticationRequest;
 import com.sparky.user_service.request.RegisterRequest;
 import com.sparky.user_service.response.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.UUID;
 
 @Service
@@ -32,9 +34,20 @@ public class AuthenticationService {
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
-        var token = jwtService.generateToken(user);
+        var accessToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+
+        // On renvoie le refresh token dans un cookie HTTP-Only
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true) // Utilise secure si ton app est en HTTPS
+                .path("/")
+                .maxAge(Duration.ofDays(7)) // 7 jours
+                .build();
+
         return AuthenticationResponse.builder()
-                .token(token)
+                .token(accessToken)
+                .refreshTokenCookie(cookie)
                 .build();
     }
 
@@ -43,9 +56,21 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var token = jwtService.generateToken(user);
+        var accessToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+
+        // On renvoie le refresh token dans un cookie HTTP-Only
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(Duration.ofDays(7))
+                .build();
+
         return AuthenticationResponse.builder()
-                .token(token)
+                .token(accessToken)
+                .refreshTokenCookie(cookie)
                 .build();
     }
+
 }

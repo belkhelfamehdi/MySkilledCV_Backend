@@ -1,6 +1,10 @@
 spring:
   application:
     name: user-service
+    security:
+      jwt:
+        secret-key: 744bea40aeb7d7e98966836fec34272dded0e623f24bd63ce013112a3855175c
+        expiration-time: 15000
 
   datasource:
     url: jdbc:postgresql://localhost:5432/job_plateform
