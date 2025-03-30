@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: native
   application:
     name: config-service
   cloud:
@@ -11,4 +9,4 @@ spring:
           default-label: master
 
 server:
-  port: 8081
+  port: 8880
